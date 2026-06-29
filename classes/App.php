@@ -1,0 +1,2 @@
+<?php
+final class App { private static array $c=[]; public static function set(string $k, mixed $v): void { self::$c[$k]=$v; } public static function get(string $k): mixed { return self::$c[$k] ?? null; } public static function config(string $path, mixed $default=null): mixed { $v=self::$c['config'] ?? []; foreach(explode('.', $path) as $p){ if(!is_array($v)||!array_key_exists($p,$v)) return $default; $v=$v[$p]; } return $v; }}
