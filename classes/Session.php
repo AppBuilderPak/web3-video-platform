@@ -1,0 +1,2 @@
+<?php
+final class Session { public static function start(array $config): void { if(session_status()===PHP_SESSION_ACTIVE) return; session_name($config['app']['session_name'] ?? 'wv_session'); session_set_cookie_params(['lifetime'=>0,'path'=>'/','secure'=>(!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off'),'httponly'=>true,'samesite'=>'Lax']); session_start(); if(empty($_SESSION['initiated'])) { session_regenerate_id(true); $_SESSION['initiated']=time(); } }}

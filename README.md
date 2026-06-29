@@ -1,171 +1,62 @@
-# Web3Video - Decentralized Video Platform
+# Web3Video PHP
 
-A fully functional, open-source, decentralized video-sharing platform built on Web3. Creator ownership, cryptocurrency-based monetization, and extreme censorship resistance.
+A framework-free, open-source video-sharing platform built for PHP 8.3+, MySQL/PDO, HTML5, CSS3, vanilla JavaScript, Bootstrap 5, and Apache.
 
-Built with ❤️ by [Pak's Digital Services](https://github.com/AppBuilderPak)
+## Features
 
-## 🎯 Core Features
+- MVC/OOP PHP application structure with secure front controller routing.
+- Installer wizard that writes `config/config.php`, imports the schema, creates an admin account, and locks itself.
+- Secure authentication with password hashing, hardened sessions, CSRF protection, CSP, output escaping, rate limiting, upload MIME validation, audit logging, and error logging.
+- YouTube-inspired responsive interface with dark/light mode, search, upload, watch pages, comments UI, side navigation, categories, notifications placeholder, and accessibility skip links.
+- Normalized MySQL schema for users, channels, videos, comments/replies, playlists, subscriptions, reports, notifications, API keys, audits, login history, crypto wallets, wallet transactions, withdrawals, and ad campaigns.
+- Crypto monetization architecture for ad revenue sharing, creator rewards, referrals, tips, donations, daily rewards, deposits, withdrawals, transaction history, and multi-coin wallets.
+- Advertisement architecture for banner, sidebar, homepage, video, pre-roll, mid-roll, sponsored video, and sponsored channel campaigns with targeting and approval statuses.
+- Admin and API entry points with role checks and rate-limited JSON responses.
 
-- **Decentralized Storage & Streaming**: IPFS/Arweave for video storage + Livepeer for transcoding
-- **Web3 Authentication**: Wallet-based authentication (MetaMask, Phantom, WalletConnect)
-- **Creator Monetization**: Smart contracts for tiered memberships and NFT-gated content
-- **Ad Revenue Sharing**: Decentralized ad engine for creator earnings
-- **Creator Studio**: Dashboard for uploads, metadata editing, and SEO optimization
-- **Social Features**: Follow, subscribe, like, comment, and trending algorithms
-- **Token-Gated Content**: NFT membership verification for exclusive videos
+## Requirements
 
-## 🛠 Tech Stack
+- PHP 8.3 or newer with PDO MySQL, fileinfo, mbstring, and OpenSSL.
+- MySQL 8+ or compatible MariaDB with InnoDB and fulltext support.
+- Apache with `mod_rewrite` and `.htaccess` enabled.
 
-### Frontend
-- **Next.js 14** - React framework for production
-- **Tailwind CSS** - Utility-first CSS framework
-- **TypeScript** - Type-safe development
-- **Wagmi/Viem** - Web3 wallet interactions (Step 2)
-- **Lucide React** - Modern icon library
+## Installation
 
-### Backend & Storage
-- **IPFS/Arweave** - Decentralized video storage (Step 4)
-- **Livepeer** - Video transcoding and streaming (Step 4)
-- **Ceramic Network** - Decentralized metadata indexing (Phase 2)
-- **The Graph** - Smart contract event indexing (Phase 2)
+1. Upload the project to shared hosting or a VPS.
+2. Point the web root to `public/` when possible. If not possible, the root `.htaccess` routes requests securely.
+3. Ensure `config/`, `logs/`, `cache/`, `videos/`, `thumbnails/`, and `uploads/` are writable by PHP.
+4. Visit `/install/` and enter database, site, and admin details.
+5. The installer imports `database/schema.sql`, imports `database/sample_data.sql`, writes `config/config.php`, creates an admin user, and creates `install/installed.lock`.
+6. Delete or restrict `/install` after successful installation for defense in depth.
 
-### Smart Contracts & Blockchain
-- **Solidity** - Smart contract development (Step 3)
-- **Polygon/Base** - Layer 2 scaling for low gas fees
-- **Hardhat** - Smart contract development framework (Step 3)
+## Folder Structure
 
-## 📋 Project Roadmap
+- `admin/` secured admin dashboard.
+- `api/` REST API endpoints.
+- `assets/` CSS, JavaScript, and images.
+- `classes/` framework core, security, sessions, database, view, audit, validation.
+- `controllers/` MVC controllers.
+- `models/` PDO models.
+- `views/` escaped PHP views and layouts.
+- `config/` configuration templates and generated production config.
+- `database/` schema and sample data.
+- `install/` installer wizard.
+- `videos/`, `thumbnails/`, `uploads/` media storage.
+- `logs/`, `cache/` runtime storage.
 
-### Phase 1: Frontend Foundation ✅
-- [x] Step 1: Initialize Next.js, build UI layout (Navbar, Video Feed, Sidebar)
-- [ ] Step 2: Integrate Wagmi/Viem wallet connection
-- [ ] Step 3: Write Solidity smart contracts for memberships
-- [ ] Step 4: Build IPFS/Livepeer upload and streaming
-- [ ] Step 5: Connect frontend to smart contracts for token-gated access
+## API
 
-### Phase 2: Advanced Features
-- [ ] Creator Studio with analytics
-- [ ] Web2 content import tool
-- [ ] Decentralized ad engine
-- [ ] Recommendation algorithm
-- [ ] Social graph indexing
-- [ ] Profile pages and creator channels
+`GET /api/videos` returns the latest public videos as JSON. API keys are modeled in `api_keys` and can be extended with scoped middleware.
 
-### Phase 3: Community & Scaling
-- [ ] DAO governance
-- [ ] Community features (groups, collections)
-- [ ] Mobile app
-- [ ] Performance optimization
-- [ ] Production deployment
+## Security Notes
 
-## 🚀 Getting Started
+- All database access uses PDO prepared statements.
+- All forms use CSRF tokens.
+- User content is escaped with `Security::e()`.
+- Sessions use HttpOnly, SameSite cookies and secure cookies under HTTPS.
+- File uploads validate MIME type with `finfo` and enforce size limits.
+- Security headers include CSP, X-Frame-Options, nosniff, Referrer-Policy, and Permissions-Policy.
+- Admin access is role-gated; moderator and detailed finance workflows are represented in schema and ready for expansion.
 
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
-- Git
+## License
 
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/AppBuilderPak/web3-video-platform.git
-cd web3-video-platform
-
-# Install dependencies
-npm install
-
-# Set up environment variables
-cp .env.example .env.local
-
-# Start development server
-npm run dev
-```
-
-Visit `http://localhost:3000` to see the application.
-
-## 📂 Project Structure
-
-```
-web3-video-platform/
-├── src/
-│   ├── app/              # Next.js app directory (pages)
-│   ├── components/       # React components (Navbar, VideoCard, etc.)
-│   ├── lib/
-│   │   ├── mockData.ts   # Mock data for development
-│   │   └── utils.ts      # Utility functions
-│   ├── styles/           # Global CSS and Tailwind config
-│   ├── types/            # TypeScript type definitions
-│   └── pages/            # Page routes (will expand in Step 2+)
-├── public/               # Static assets
-├── tailwind.config.ts    # Tailwind CSS configuration
-├── tsconfig.json         # TypeScript configuration
-└── package.json          # Dependencies and scripts
-```
-
-## 🎨 UI Components
-
-- **Navbar**: Navigation with search, upload button, notifications, profile dropdown
-- **Sidebar**: Navigation menu with trending, saved, liked, and subscriptions
-- **VideoCard**: Responsive video thumbnail with metadata and hover effects
-- **FeaturedSection**: Carousel for featured videos with auto-rotation
-- **CategoryFilter**: Horizontal scrolling category buttons
-- **Footer**: Links, social media, and attribution
-
-## 🔐 Security Considerations
-
-- All wallet interactions use Wagmi best practices
-- Smart contracts undergo security audits (Step 3)
-- IPFS content verification via IPFS hash
-- Rate limiting on API endpoints
-- Input validation on all forms
-
-## 📊 Performance Optimizations
-
-- Next.js Image Optimization
-- Code splitting and lazy loading
-- Optimized video streaming via Livepeer
-- Responsive design for all devices
-- CSS-in-JS with Tailwind for minimal bundle size
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is open-source and available under the MIT License. See [LICENSE](LICENSE) file for details.
-
-## 💬 Community & Support
-
-- **Discord**: [Join our community](https://discord.gg/web3video)
-- **GitHub Issues**: [Report bugs or request features](https://github.com/AppBuilderPak/web3-video-platform/issues)
-- **Twitter**: [@Web3Video](https://twitter.com/web3video)
-- **Email**: info@web3video.com
-
-## 🙏 Acknowledgments
-
-- Built with ❤️ by [Pak's Digital Services](https://github.com/AppBuilderPak)
-- Inspired by Web2 video platforms with Web3 principles
-- Thanks to all open-source contributors and the community
-
-## 📚 Resources
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [Web3.js Documentation](https://docs.web3js.org/)
-- [Solidity Documentation](https://docs.soliditylang.org/)
-- [IPFS Documentation](https://docs.ipfs.io/)
-- [Livepeer Documentation](https://docs.livepeer.org/)
-
----
-
-**Status**: 🔄 In Development (Phase 1: Frontend Foundation)
-
-Last Updated: 2024
+MIT. See `LICENSE`.
